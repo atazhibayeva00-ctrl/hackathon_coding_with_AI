@@ -1,59 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GeoStats</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <!-- Fullscreen Map -->
-    <div id="map"></div>
-
-    <!-- Top Search Overlay -->
-    <div id="top-overlay">
-        <div id="search-container">
-            <input id="address-search" type="text" placeholder="Search for address, city, or postcode...">
-            <button id="search-btn">Search</button>
-            <button id="voice-btn" title="Voice commands">🎤</button>
-        </div>
-    </div>
-
-    <!-- Bottom Dev Panel -->
-    <div id="bottom-dev-panel">
-        <div id="dev-panel-header">
-            <span>🔧 Developer Controls</span>
-            <button id="dev-panel-toggle">▲</button>
-        </div>
-        <div id="dev-panel-content">
-            <div id="coordinates-display">
-                <strong>Current Location:</strong> <span id="current-coords">(37.77, -122.42)</span>
-            </div>
-            <div id="radius-control">
-                <label for="radius-slider">Search Radius: <span id="radius-value">1.0</span> miles</label>
-                <input type="range" id="radius-slider" min="0.1" max="5.0" step="0.1" value="1.0">
-            </div>
-            <div id="action-buttons">
-                <button id="search-rent-btn">Search Rent</button>
-                <button id="search-buy-btn">Search Buy</button>
-                <button id="generate-report-btn">Generate Report</button>
-            </div>
-            <div id="chat">
-                <div id="chat-output"></div>
-                <div id="chat-input-container">
-                    <input id="chat-input" type="text" placeholder="How can I help you today?">
-                    <button id="mic-btn" title="Click to speak">🎤</button>
-                </div>
-            </div>
-            <div id="json-output-section">
-                <h4>JSON Output:</h4>
-                <pre id="json-output">Click "Generate Report" to see JSON output...</pre>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="script.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GeoStats - Multi-Agent Geographic Intelligence</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
