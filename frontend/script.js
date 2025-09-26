@@ -206,8 +206,8 @@ generateReportBtn.addEventListener('click', function() {
     jsonOutput.textContent = JSON.stringify(payload, null, 2);
 
     // Expand dev panel if collapsed
-    if (devContent.classList.contains('collapsed')) {
-        devHeader.click();
+    if (devPanel.classList.contains('collapsed')) {
+        devPanelHeader.click();
     }
 
     // Also console.log for backup
@@ -232,19 +232,20 @@ function getChatHistory() {
     return messages;
 }
 
-// Dev panel functionality
-const devHeader = document.getElementById('dev-header');
-const devContent = document.getElementById('dev-content');
-const devToggle = document.getElementById('dev-toggle');
+// Bottom dev panel functionality
+const devPanelHeader = document.getElementById('dev-panel-header');
+const devPanel = document.getElementById('bottom-dev-panel');
+const devPanelToggle = document.getElementById('dev-panel-toggle');
 
-devHeader.addEventListener('click', function() {
-    devContent.classList.toggle('collapsed');
-    if (devContent.classList.contains('collapsed')) {
-        devToggle.textContent = '▶';
-        devToggle.style.transform = 'rotate(-90deg)';
+// Start with panel collapsed
+devPanel.classList.add('collapsed');
+
+devPanelHeader.addEventListener('click', function() {
+    devPanel.classList.toggle('collapsed');
+    if (devPanel.classList.contains('collapsed')) {
+        devPanelToggle.textContent = '▲';
     } else {
-        devToggle.textContent = '▼';
-        devToggle.style.transform = 'rotate(0deg)';
+        devPanelToggle.textContent = '▼';
     }
 });
 
@@ -296,6 +297,53 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
         console.error('Speech recognition error:', event.error);
         addChatMessage('GeoAgent', 'Sorry, I had trouble hearing you. Please try again.');
         recognition.stop();
+    };
+}
+
+// Voice button functionality (top overlay)
+const voiceBtn = document.getElementById('voice-btn');
+
+voiceBtn.addEventListener('click', function() {
+    if (!recognition) {
+        alert('Speech recognition is not supported in this browser. Please use Chrome, Edge, or Safari.');
+        return;
+    }
+
+    if (isListening) {
+        recognition.stop();
+    } else {
+        recognition.start();
+    }
+});
+
+// Update voice button state
+if (recognition) {
+    recognition.onstart = function() {
+        isListening = true;
+        voiceBtn.classList.add('listening');
+        voiceBtn.textContent = '🔴';
+        voiceBtn.title = 'Listening... Click to stop';
+
+        // Also update chat mic button if exists
+        const micBtn = document.getElementById('mic-btn');
+        if (micBtn) {
+            micBtn.classList.add('listening');
+            micBtn.textContent = '🔴';
+        }
+    };
+
+    recognition.onend = function() {
+        isListening = false;
+        voiceBtn.classList.remove('listening');
+        voiceBtn.textContent = '🎤';
+        voiceBtn.title = 'Voice commands';
+
+        // Also update chat mic button if exists
+        const micBtn = document.getElementById('mic-btn');
+        if (micBtn) {
+            micBtn.classList.remove('listening');
+            micBtn.textContent = '🎤';
+        }
     };
 }
 
