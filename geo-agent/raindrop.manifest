@@ -1,0 +1,63 @@
+application "geo-agent" {
+  service "api-gateway" {
+    visibility = "public"
+  }
+
+  service "map-agent" {
+    visibility = "private"
+  }
+
+  service "chat-agent" {
+    visibility = "private"
+  }
+
+  service "crime-agent" {
+    visibility = "private"
+  }
+
+  service "flood-agent" {
+    visibility = "private"
+  }
+
+  service "earthquake-agent" {
+    visibility = "private"
+  }
+
+  service "noise-agent" {
+    visibility = "private"
+  }
+
+  service "highway-agent" {
+    visibility = "private"
+  }
+
+  service "zillow-agent" {
+    visibility = "private"
+  }
+
+  smartmemory "chat-history" {}
+
+  env "ZILLOW_API_KEY" {
+    secret = true
+  }
+
+  env "CRIME_API_KEY" {
+    secret = true
+  }
+
+  env "FLOOD_API_KEY" {
+    secret = true
+  }
+
+  env "EARTHQUAKE_API_KEY" {
+    secret = true
+  }
+
+  env "NOISE_API_KEY" {
+    secret = true
+  }
+
+  env "HIGHWAY_API_KEY" {
+    secret = true
+  }
+}
