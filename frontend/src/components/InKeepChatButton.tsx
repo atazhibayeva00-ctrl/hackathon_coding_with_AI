@@ -28,6 +28,9 @@ const InkeepChatButton: React.FC<InKeepChatButtonProps> = ({ aiChatSettings }) =
 
     // Simulate API call to InKeep
     try {
+      console.log('Making API call to:', aiChatSettings.graphUrl);
+      console.log('Using API key:', aiChatSettings.apiKey ? 'Present' : 'Missing');
+      
       const response = await fetch(aiChatSettings.graphUrl, {
         method: 'POST',
         headers: {
@@ -49,13 +52,13 @@ const InkeepChatButton: React.FC<InKeepChatButtonProps> = ({ aiChatSettings }) =
         };
         setMessages(prev => [...prev, aiMessage]);
       } else {
-        throw new Error('API call failed');
+        throw new Error(`API call failed with status: ${response.status}`);
       }
     } catch (error) {
       console.error('InKeep API error:', error);
       const errorMessage = {
         sender: 'InKeep AI',
-        message: 'Sorry, I\'m having trouble connecting right now. This is a placeholder response.',
+        message: `Sorry, I'm having trouble connecting right now. Error: ${error instanceof Error ? error.message : 'Unknown error'}`,
         timestamp: new Date()
       };
       setMessages(prev => [...prev, errorMessage]);
@@ -99,6 +102,11 @@ const InkeepChatButton: React.FC<InKeepChatButtonProps> = ({ aiChatSettings }) =
                   <li>🌊 Environmental data</li>
                 </ul>
                 <p>Ask me anything about the current location!</p>
+                <div style={{ marginTop: '15px', padding: '10px', background: '#e3f2fd', borderRadius: '8px', fontSize: '12px' }}>
+                  <strong>Debug Info:</strong><br/>
+                  API URL: {aiChatSettings.graphUrl}<br/>
+                  API Key: {aiChatSettings.apiKey ? 'Present' : 'Missing'}
+                </div>
               </div>
             ) : (
               messages.map((msg, index) => (
@@ -132,12 +140,22 @@ const InkeepChatButton: React.FC<InKeepChatButtonProps> = ({ aiChatSettings }) =
 
 // Main component that uses Vite's environment variables
 const ChatButton: React.FC = () => {
+  // Get environment variables with proper fallbacks
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3003';
+  const apiKey = import.meta.env.VITE_INKEEP_API_KEY || 'sk_C5h0cZx95Wpw.WVj1jsUcpYhvos72EftbNcB16jWeONM794D8Nmu6Jxw';
+  
   const buttonProps: InKeepChatButtonProps = {
     aiChatSettings: {
-      graphUrl: import.meta.env.VITE_API_BASE_URL + "/api/chat" || "http://localhost:3003/api/chat",
-      apiKey: import.meta.env.VITE_INKEEP_API_KEY || "sk_C5h0cZx95Wpw.WVj1jsUcpYhvos72EftbNcB16jWeONM794D8Nmu6Jxw",
+      graphUrl: `${apiBaseUrl}/api/chat`,
+      apiKey: apiKey,
     },
   };
+
+  console.log('Environment variables:', {
+    VITE_API_BASE_URL: import.meta.env.VITE_API_BASE_URL,
+    VITE_INKEEP_API_KEY: import.meta.env.VITE_INKEEP_API_KEY ? 'Present' : 'Missing',
+    finalApiUrl: buttonProps.aiChatSettings.graphUrl
+  });
 
   return <InkeepChatButton {...buttonProps} />;
 };
